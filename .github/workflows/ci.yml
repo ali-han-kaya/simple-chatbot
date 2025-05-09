@@ -1,0 +1,31 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main  # main branch'a her commit yapıldığında çalışacak
+  pull_request:
+    branches:
+      - main  # main branch'a yapılan pull request'ler için çalışacak
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # GitHub Actions işleminin çalışacağı ortam
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2  # Kodu GitHub'dan çekmek için
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'  # Python 3.8 kullanıyoruz
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt  # Gereksinim dosyasındaki bağımlılıkları yükle
+
+    - name: Run tests
+      run: |
+        pytest  # Testleri çalıştırmak için pytest kullanıyoruz
