@@ -1,0 +1,22 @@
+import sqlite3
+
+# Veritabanı bağlantısı
+conn = sqlite3.connect('chat_history.db')
+c = conn.cursor()
+
+# Veritabanında tablo oluşturma
+c.execute('''CREATE TABLE IF NOT EXISTS chat_log
+             (user_input TEXT, bot_response TEXT)''')
+
+# Veritabanına mesaj eklemek için fonksiyon
+def log_chat(user_input, bot_response):
+    c.execute("INSERT INTO chat_log (user_input, bot_response) VALUES (?, ?)", (user_input, bot_response))
+    conn.commit()
+
+# Örnek kullanıcı-bot etkileşimi
+user_input = "Hello, how are you?"
+bot_response = "I'm good, thank you!"
+log_chat(user_input, bot_response)
+
+# Bağlantıyı kapatma
+conn.close()
